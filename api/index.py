@@ -64,8 +64,5 @@ def index():
 def download():
     return send_file(OUTPUT_FILE, as_attachment=True)
 
-# ✅ Local run
-if __name__ == "__main__":
-    app.run(debug=True)
+
     
-    print("API KEY:", API_KEY)
