@@ -15,30 +15,35 @@ def extract_text(file):
     if not API_KEY:
         return "API key missing"
 
-    response = requests.post(
-        "https://api.ocr.space/parse/image",
-        files={"file": (file.filename, file.stream, file.mimetype)},
-        data={"apikey": API_KEY}
-    )
-
     try:
+        response = requests.post(
+            "https://api.ocr.space/parse/image",
+            files={"file": (file.filename, file.stream, file.mimetype)},
+            data={"apikey": API_KEY}
+        )
+
+        # 👇 IMPORTANT: print raw response
+        print("RAW RESPONSE:", response.text)
+
+        # Try JSON
         result = response.json()
-    except:
-        return "Invalid response from OCR API"
 
-    # 👇 SAFE CHECK
-    if not isinstance(result, dict):
-        return "Unexpected response: " + str(result)
+    except Exception as e:
+        return "Request failed: " + str(e)
 
+    # 👇 FIX: handle if string comes
+    if isinstance(result, str):
+        return "API returned string: " + result
+
+    # 👇 SAFE access
     if result.get("IsErroredOnProcessing"):
-        return "API Error: " + str(result.get("ErrorMessage"))
+        return "API Error: " + str(result)
 
     try:
         return result["ParsedResults"][0]["ParsedText"]
-    except:
-        return "No text found"
-
-@app.route("/", methods=["GET", "POST"])
+    except Exception as e:
+        return "Parsing error: " + str(result)@app.route("/", methods=["GET", "POST"])
+    
 def index():
     text = ""
 
