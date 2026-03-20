@@ -7,7 +7,7 @@ app = Flask(__name__, template_folder="../templates")
 OUTPUT_FILE = "output.txt"
 
 # 🔴 For now keep API key here (simple)
-API_KEY = "K84836366188957"
+API_KEY = os.environ.get("K84836366188957")
 
 def extract_text(file):
     response = requests.post(
@@ -54,3 +54,5 @@ def download():
 # ✅ Local run
 if __name__ == "__main__":
     app.run(debug=True)
+    
+    print("API KEY:", API_KEY)
