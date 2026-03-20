@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OCR App</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0;
+        }
+
+        .container {
+            width: 65%;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .upload-box {
+            border: 2px dashed #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        img {
+            max-width: 200px;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .download-btn {
+            background: #28a745;
+        }
+
+        .copy-btn {
+            background: #ff9800;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-top: 20px;
+            padding: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+    <h1>📄 OCR Text Extractor</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        
+        <label class="upload-box">
+            📂 Click to Upload Image
+            <input type="file" name="image" id="fileInput" required>
+        </label>
+
+        <img id="preview" style="display:none;">
+
+        <br>
+
+        <button type="submit">Extract Text</button>
+    </form>
+
+    <h3>Extracted Text:</h3>
+    <textarea readonly id="textArea">{{ text }}</textarea>
+
+    <br>
+
+    <button class="copy-btn" onclick="copyText()">📋 Copy</button>
+
+    <a href="/download">
+        <button class="download-btn">⬇ Download</button>
+    </a>
+
+</div>
+
+<script>
+    const fileInput = document.getElementById("fileInput");
+    const preview = document.getElementById("preview");
+
+    fileInput.addEventListener("change", function() {
+        const file = this.files[0];
+        if (file) {
+            preview.style.display = "block";
+            preview.src = URL.createObjectURL(file);
+        }
+    });
+
+    function copyText() {
+        const textArea = document.getElementById("textArea");
+        navigator.clipboard.writeText(textArea.value);
+        alert("Copied!");
+    }
+</script>
+
+</body>
+</html>
