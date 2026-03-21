@@ -6,7 +6,6 @@ app = Flask(__name__, template_folder="../templates")
 
 OUTPUT_FILE = "output.txt"
 
-# 🔴 For now keep API key here (simple)
 API_KEY = "K84836366188957"
 
 def extract_text(file):
@@ -38,10 +37,7 @@ def index():
         file = request.files["image"]
 
         if file:
-            # Direct file send (no saving needed)
             text = extract_text(file)
-
-            # Save for download
             with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
                 f.write(text)
 
@@ -51,6 +47,5 @@ def index():
 def download():
     return send_file(OUTPUT_FILE, as_attachment=True)
 
-# ✅ Local run
 if __name__ == "__main__":
     app.run(debug=True)
